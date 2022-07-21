@@ -1,0 +1,8 @@
+<launch>
+    <rosparam file="$(find ros_mobilenet)/config/param.yaml" />
+    <node name="detector_node" 
+            pkg="ros_mobilenet" 
+            type="detect.py"  
+            output="screen">
+    </node>
+</launch>

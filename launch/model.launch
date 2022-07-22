@@ -1,5 +1,5 @@
 <launch>
-    <rosparam file="$(find ros_mobilenet)/config/param.yaml" />
+    <rosparam file="$(find ros_mobilenet)/param/param.yaml" />
     <node name="detector_node" 
             pkg="ros_mobilenet" 
             type="detect.py"  

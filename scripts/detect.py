@@ -3,6 +3,7 @@ import rospy
 from cv_bridge import CvBridge
 from sensor_msgs.msg import Image
 from std_srvs.srv import SetBool, SetBoolResponse
+from ros_mobilenet.msg import Prediction
 import cv2
 import numpy as np
 import os
@@ -16,8 +17,11 @@ class MobileNet:
         '''
         self.sub_topic = rospy.get_param("input_image", "/image_raw")
         self.pub_topic = rospy.get_param("output_image", "/detect/image_raw")
+        self.pred_topic = rospy.get_param("prediction_topic", "/prediction")
+
         rospy.Subscriber(self.sub_topic, Image, self.detect)
         self.pubimage = rospy.Publisher(self.pub_topic, Image, queue_size= 1)
+        self.pub_prediction = rospy.Publisher(self.pred_topic, Prediction, queue_size=1)
         rospy.Service("is_detect", SetBool, self.service_handler)
         self.isDetect = True
         
@@ -78,6 +82,7 @@ class MobileNet:
         '''
         imW = msg.width
         imH = msg.height
+        pred = Prediction()
         cv_image =  self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
         frame_rgb = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
         frame_resized = cv2.resize(frame_rgb, (self.width, self.height))
@@ -114,8 +119,17 @@ class MobileNet:
                     label_ymin = max(ymin, labelSize[1] + 10) # Make sure not to draw label too close to top of window
                     cv2.rectangle(cv_image, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) # Draw white box to put label text in
                     cv2.putText(cv_image, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
+                    
+                    pred.label = object_name
+                    pred.prediction_score = scores[i]
+                    pred.xmin = xmin
+                    pred.ymin = ymin
+                    pred.xmax = xmax
+                    pred.ymax = ymax
+
         output_msg = self.bridge.cv2_to_imgmsg(cv_image, encoding="rgb8")
         self.pubimage.publish(output_msg)
+        self.pub_prediction.publish(pred)
 
 if __name__ == "__main__":
     rospy.init_node("detector_node")

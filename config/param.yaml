@@ -1,2 +1,3 @@
-input_image: "/webcam/image_raw"
+input_image: "/usb_cam/image_raw"
 output_image: "/mobilenet/image_raw"
+prediction_topic: "/mobilenet/prediction"

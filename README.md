@@ -1,13 +1,12 @@
 # ros_mobilenet
 
-ROS Package for MobileNet SSD
+ROS Package for MobileNet SSD Object Detector. This doesn't require a GPU to run.
 
 ### Node
 The topic names can be changed in the param.yaml 
 #### Subscribed Topics
 1. /webcam/image_raw (sensor_msgs/Image)<br>
 The input RGB image stream
-<br>
 
 #### Published Topics
 1. /mobilenet/image_raw (sensor_msgs/Image) <br>
@@ -26,4 +25,4 @@ Run `bash requirements.sh` <br>
 
 ### Usage
 `roslaunch ros_mobilenet model.launch` <br>
-`rosservice call /is_detect "data: false/true`  to set the detection off/on
+`rosservice call /is_detect "data: false/true"`  to set the detection off/on

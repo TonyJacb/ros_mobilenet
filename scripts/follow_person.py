@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import rospy
 from ros_mobilenet.msg import Prediction
 from geometry_msgs.msg import Twist

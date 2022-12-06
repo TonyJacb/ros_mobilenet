@@ -1,6 +1,7 @@
 # ros_mobilenet
 
-ROS Package for MobileNet SSD Object Detector. This doesn't require a GPU to run.
+ROS Package for MobileNet SSD Object Detector. This doesn't require a GPU to run.<br>
+YouTube link: [here](https://youtu.be/YnXtb4YtKRc)
 
 ### Node
 The topic names can be changed in the param.yaml 
